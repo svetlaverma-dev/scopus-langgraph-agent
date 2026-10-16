@@ -1,0 +1,23 @@
+[project]
+name = "scopus-langgraph-agent"
+version = "0.1.0"
+description = "A LangGraph agent that queries Scopus through an MCP server"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx",                    # HTTP client for calling the Scopus API
+  "python-dotenv",            # loads keys from .env
+  "mcp[cli]",                 # MCP SDK + 'mcp dev' inspector
+  "langgraph",                # the agent graph framework
+  "langchain-anthropic",      # Claude models for LangChain/LangGraph
+  "langchain-mcp-adapters",   # turns MCP tools into LangChain tools
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["server*", "agent*"]
