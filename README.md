@@ -2,6 +2,31 @@
 
 A LangGraph agent that answers natural-language questions about research literature by querying Scopus through an MCP server.
 
+## Quick start
+
+Requires Python 3.11+, an Elsevier Scopus API key and an Anthropic API key.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+cp .env.example .env   # then fill in your Scopus and Anthropic API keys
+```
+
+Run the agent:
+
+```bash
+python -m agent.graph
+```
+
+Then ask a question, e.g. `What are the most cited UK cancer papers since 2020?`. Each Scopus query the agent writes is printed as a `[tool]` line before its answer. Type `quit` to exit.
+
+Run the tests (offline, using saved fixtures):
+
+```bash
+pytest -v
+```
+
 ## How the layers fit together
 
 ```
