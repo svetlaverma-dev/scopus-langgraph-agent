@@ -56,6 +56,16 @@ python -m agent.graph
 
 Then ask a question, e.g. `What are the most cited UK cancer papers since 2020?`. Each Scopus query the agent writes is printed as a `[tool]` line before its answer. Type `quit` to exit.
 
+Or run the web chat app, built with [Streamlit](https://streamlit.io):
+
+```bash
+streamlit run streamlit_app.py
+```
+
+It opens in your browser at `http://localhost:8501`. Each answer shows the Scopus query the agent wrote, and follow-up questions keep the conversation's context. Press `Ctrl+C` in the terminal to stop it.
+
+To try either version without a Scopus API key, add `DEMO_MODE=1` in front of the command, e.g. `DEMO_MODE=1 streamlit run streamlit_app.py`. Search results are then synthetic (see [How does Demo mode work](#how-does-demo-mode-work)).
+
 Run the tests (offline, using saved fixtures):
 
 ```bash
@@ -83,7 +93,7 @@ Elsevier Scopus API
 1. **Scopus client** (`server/scopus_client.py`): handles authentication, endpoints, quota and errors for the Scopus API.
 2. **MCP server** (`server/`): exposes the client methods as MCP tools. Each tool's description explains Scopus query syntax so the LLM can call it correctly.
 3. **LangGraph agent** (`agent/`): Claude turns the user's question into Scopus Advanced Search syntax, calls the tools, refines the query if needed and summarises the results.
-4. **Chat front end**: passes the user's questions to the agent and shows its answers.
+4. **Chat front end**: passes the user's questions to the agent and shows its answers. There are two: a terminal chat loop (`python -m agent.graph`) and a Streamlit web app (`streamlit_app.py`).
 
 ## How does Demo mode work
 
@@ -172,7 +182,7 @@ Measure how well the agent turns natural-language questions into correct Scopus 
 ### 4. More tools and a web UI
 
 - **New MCP tools:** `get_abstract` and `search_authors`, wrapping the Scopus client's existing abstract and author endpoints. They let the agent summarise papers, identify leading researchers, and retrieve complete affiliation data, which search results only partly include.
-- **Web chat interface:** a lightweight browser UI (for example, Streamlit or Gradio) and a short demo recording in this README, so the agent can be tried and seen without a terminal.
+- **Web chat interface:** done, as a Streamlit app (see [Quick start](#quick-start)). Still to come: a hosted demo and a short demo recording in this README, so the agent can be tried and seen without installing anything.
 
 ### 5. Vendor routing through an LLM gateway
 
