@@ -1,9 +1,11 @@
 """MCP server exposing Scopus search as tools for the agent (layer 2)."""
+import os
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
-
+from server.demo_data import demo_search
 from server.scopus_client import ScopusClient
+
 
 mcp = FastMCP("scopus")
 
@@ -54,6 +56,9 @@ def search_scopus(query: str, count: int = 10, sort: str = "-citedby-count") -> 
     an author or country is absent from them. If total_results is very large,
     narrow the query rather than asking for more.
     """
+    if os.environ.get("DEMO_MODE") == "1":
+        return demo_search(query, count, sort)
+        
     with ScopusClient() as sc:
         data = sc.search(query, count=count, sort=sort)
     return trim_search_results(data)

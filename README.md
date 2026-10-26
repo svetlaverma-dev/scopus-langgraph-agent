@@ -8,6 +8,7 @@ A conversational AI agent for intelligent search over research literature. Ask a
 - [Why it was built](#why-it-was-built)
 - [Quick start](#quick-start)
 - [How the layers fit together](#how-the-layers-fit-together)
+- [How does Demo mode work](#how-does-demo-mode-work)
 - [Why LangGraph](#why-langgraph)
   - [Alternatives considered](#alternatives-considered)
 - [Roadmap](#roadmap)
@@ -83,6 +84,43 @@ Elsevier Scopus API
 2. **MCP server** (`server/`): exposes the client methods as MCP tools. Each tool's description explains Scopus query syntax so the LLM can call it correctly.
 3. **LangGraph agent** (`agent/`): Claude turns the user's question into Scopus Advanced Search syntax, calls the tools, refines the query if needed and summarises the results.
 4. **Chat front end**: passes the user's questions to the agent and shows its answers.
+
+## How does Demo mode work
+
+Demo mode lets you try the agent without a Scopus API key, and without showing any Elsevier data. Run it with:
+
+```bash
+DEMO_MODE=1 python -m agent.graph
+```
+
+Only the last step changes. Claude still writes a real Scopus query, and the agent still calls the MCP server's `search_scopus` tool. Instead of calling the Scopus API, the tool returns synthetic papers from `server/demo_data.py`:
+
+```
+                        Normal mode                      Demo mode (DEMO_MODE=1)
+                        ───────────                      ───────────────────────
+User question               │                                  │
+                            ▼                                  ▼
+LangGraph agent (Claude)  writes the query                writes the query        ← real
+                            │                                  │
+                            ▼  tools/call over stdio           ▼  tools/call over stdio
+MCP server: search_scopus   │                                  │                  ← real
+                            ▼                                  ▼
+                       ScopusClient                       demo_search()           ← the switch
+                            │                             (synthetic papers)
+                            ▼
+                    Elsevier Scopus API                   (not contacted)
+```
+
+1. Claude turns the question into a Scopus Advanced Search query.
+2. LangGraph sends a `tools/call` request to the MCP server over stdio, the same as in normal mode.
+3. `search_scopus` sees `DEMO_MODE=1` and returns `demo_search(...)` instead of calling `ScopusClient`.
+4. The results go back to the agent through MCP, and Claude answers from them.
+
+The switch sits inside the MCP tool, so the tool's name, description and arguments are identical in both modes. Claude therefore writes its queries exactly as it would in normal mode, and every layer except the Scopus API still runs.
+
+The synthetic papers use the query's topic, its `PUBYEAR >` year and the requested count and sort order. Everything else is fixed. They're labelled to make clear they aren't real: each title starts with `[Demo] Synthetic study`, and each DOI uses the reserved test prefix `10.5555`. Other filters, such as `AFFILCOUNTRY` or `DOCTYPE`, don't change the results.
+
+Demo mode also keeps the demo working when the Scopus API is unavailable, for example during an outage, or when the API key has expired or its quota has run out. An Anthropic API key is still needed, since Claude does the reasoning.
 
 ## Why LangGraph
 

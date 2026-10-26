@@ -1,5 +1,6 @@
 """LangGraph agent that answers research questions using the Scopus MCP server (layer 3)."""
 import asyncio
+import os
 import sys
 
 from dotenv import load_dotenv
@@ -27,6 +28,7 @@ MCP_SERVERS = {
         "command": sys.executable,           # the venv's python
         "args": ["-m", "server.mcp_server"],  # same as your manual tests
         "transport": "stdio",
+        "env": dict(os.environ),             # pass DEMO_MODE and API keys to the server
     }
 }
 
