@@ -13,9 +13,14 @@ load_dotenv()
 
 SYSTEM_PROMPT = """You are a research assistant with access to the Scopus database.
 Answer questions by turning them into Scopus Advanced Search queries for the search_scopus tool.
+Only search when the user wants to find, list or compare published literature. For greetings,
+general questions or definitions of concepts, answer directly from general knowledge without searching.
+Only add the filters the user asked for. Do not add DOCTYPE or year filters unless the question
+implies them (for example "recent", "since 2020" or "not reviews").
 If a query fails, read the error, fix the query and try again.
-If results are dominated by reviews and the user wants original research, add DOCTYPE(ar).
+You cannot download papers. If asked for a PDF, find the paper and give its DOI link instead.
 Answer only from the tool results, citing each paper with its title, first author, year and DOI."""
+
 
 MCP_SERVERS = {
     "scopus": {
@@ -25,11 +30,15 @@ MCP_SERVERS = {
     }
 }
 
+MODEL = "claude-sonnet-5-5"
+
+def make_model():
+    return ChatAnthropic(model=MODEL)
 
 async def build_agent():
     client = MultiServerMCPClient(MCP_SERVERS)
     tools = await client.get_tools()  # tools/list → LangChain tools
-    model = ChatAnthropic(model="claude-sonnet-5-5").bind_tools(tools)
+    model = make_model().bind_tools(tools)
 
     async def call_model(state: MessagesState):
         response = await model.ainvoke([SystemMessage(SYSTEM_PROMPT), *state["messages"]])
