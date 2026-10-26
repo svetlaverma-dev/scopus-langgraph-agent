@@ -22,6 +22,12 @@ If a query fails, read the error, fix the query and try again.
 You cannot download papers. If asked for a PDF, find the paper and give its DOI link instead.
 Answer only from the tool results, citing each paper with its title, first author, year and DOI."""
 
+if os.environ.get("DEMO_MODE") == "1":
+    SYSTEM_PROMPT += (
+        "\nDemo mode is on: search results are synthetic placeholders, not real papers. "
+        "Present them as usual and mention once, briefly, that they are demo data."
+    )
+
 
 MCP_SERVERS = {
     "scopus": {
