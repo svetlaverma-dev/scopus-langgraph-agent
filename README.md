@@ -1,10 +1,29 @@
 # scopus-langgraph-agent
 
-A LangGraph agent that answers natural-language questions about research literature by querying Scopus through an MCP server.
+A conversational AI agent for intelligent search over research literature. Ask a question in plain English, such as *"What are the most cited UK cancer papers since 2020?"*, and the agent turns it into a Scopus Advanced Search query, runs it through an MCP server and answers with cited results from live data.
+
+## What it is
+
+The agent combines several capabilities:
+
+- **Conversational AI.** You talk to it in natural language, and it keeps context across turns, so follow-ups like *"Which of those are original research?"* work.
+- **Intelligent, agentic search.** Claude, orchestrated by LangGraph, decides when to search, writes the Scopus query itself, reads the results, and refines or corrects the query (for example, after a syntax error) before answering.
+- **Grounded answers.** Answers come from Scopus results, not the model's memory. Each paper is cited with its title, first author, year and DOI.
+
+## Why it was built
+
+[Scopus](https://www.elsevier.com/products/scopus) is Elsevier's abstract and citation database, curated by independent subject matter experts, with more than 100 million records according to Elsevier. Getting precise answers from it means knowing its [Advanced Search syntax](https://dev.elsevier.com/sc_search_tips.html), such as `TITLE-ABS-KEY(...)`, `AFFILCOUNTRY(...)` and `PUBYEAR > ...`. This project explores how an AI agent can remove that barrier, so anyone can query complex data sources in plain language.
+
+It is also a hands-on exploration of how production-style agentic AI systems are put together:
+
+- a layered architecture separating the API client, the tool layer and the agent
+- tools exposed through the open **Model Context Protocol (MCP)**, so any MCP-compatible client can reuse them
+- a model-agnostic agent built with **LangGraph**
+- offline tests with synthetic fixtures, and care with third-party data licensing
 
 ## Quick start
 
-Requires Python 3.11+, an Elsevier Scopus API key and an Anthropic API key.
+Requires Python 3.11+, an Elsevier Scopus API key (from the [Elsevier Developer Portal](https://dev.elsevier.com)) and an Anthropic API key (from the [Anthropic Console](https://console.anthropic.com)).
 
 ```bash
 python3 -m venv .venv
