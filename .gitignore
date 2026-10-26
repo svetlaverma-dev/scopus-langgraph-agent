@@ -224,3 +224,6 @@ __marimo__/
 .cache/
 runs/
 *.sqlite
+
+# Real Scopus API responses: keep local only (Elsevier terms restrict redistribution)
+tests/fixtures/search_*.json

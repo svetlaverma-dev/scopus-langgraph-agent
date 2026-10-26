@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-import pytest
-
 from server.mcp_server import trim_search_results
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -12,12 +10,11 @@ def load(name):
     return json.loads((FIXTURES / f"{name}.json").read_text())
 
 
-@pytest.mark.parametrize("name", ["search_uk_cancer", "search_graphene_battery"])
-def test_trim_search_results(name):
-    trimmed = trim_search_results(load(name))
+def test_trim_search_results():
+    trimmed = trim_search_results(load("sample_search"))
 
-    assert trimmed["total_results"] > 0
-    assert 0 < len(trimmed["papers"]) <= 25
+    assert trimmed["total_results"] == 1234
+    assert len(trimmed["papers"]) == 3
     for paper in trimmed["papers"]:
         assert paper["title"]
         assert paper["scopus_id"].isdigit()
@@ -25,8 +22,8 @@ def test_trim_search_results(name):
         assert isinstance(paper["open_access"], bool)
 
 
-def test_uk_cancer_first_paper():
-    first = trim_search_results(load("search_uk_cancer"))["papers"][0]
+def test_first_paper():
+    first = trim_search_results(load("sample_search"))["papers"][0]
     assert first == {
         "title": "A synthetic review of example methods",
         "first_author": "Example A.",
@@ -40,9 +37,15 @@ def test_uk_cancer_first_paper():
     }
 
 
-def test_uk_cancer_sorted_by_citations():
-    cited = [p["cited_by"] for p in trim_search_results(load("search_uk_cancer"))["papers"]]
+def test_sorted_by_citations():
+    cited = [p["cited_by"] for p in trim_search_results(load("sample_search"))["papers"]]
     assert cited == sorted(cited, reverse=True)
+
+
+def test_missing_doi_is_none():
+    third = trim_search_results(load("sample_search"))["papers"][2]
+    assert third["doi"] is None
+    assert third["doc_type"] == "Conference Paper"
 
 
 def test_empty_result_set():

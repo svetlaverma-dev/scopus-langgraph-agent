@@ -1,0 +1,66 @@
+{
+  "search-results": {
+    "opensearch:totalResults": "1234",
+    "opensearch:startIndex": "0",
+    "opensearch:itemsPerPage": "3",
+    "opensearch:Query": {
+      "@role": "request",
+      "@searchTerms": "TITLE-ABS-KEY(example) AND PUBYEAR > 2019",
+      "@startPage": "0"
+    },
+    "entry": [
+      {
+        "@_fa": "true",
+        "link": [{"@_fa": "true", "@ref": "self", "@href": "https://api.elsevier.com/content/abstract/scopus_id/00000000001"}],
+        "prism:url": "https://api.elsevier.com/content/abstract/scopus_id/00000000001",
+        "dc:identifier": "SCOPUS_ID:00000000001",
+        "eid": "2-s2.0-00000000001",
+        "dc:title": "A synthetic review of example methods",
+        "dc:creator": "Example A.",
+        "prism:publicationName": "Journal of Synthetic Examples",
+        "prism:coverDate": "2023-05-01",
+        "prism:doi": "10.5555/example.001",
+        "citedby-count": "950",
+        "affiliation": [{"@_fa": "true", "affilname": "Example University", "affiliation-city": "Exampleton", "affiliation-country": "United Kingdom"}],
+        "subtype": "re",
+        "subtypeDescription": "Review",
+        "openaccess": "1",
+        "openaccessFlag": true
+      },
+      {
+        "@_fa": "true",
+        "link": [{"@_fa": "true", "@ref": "self", "@href": "https://api.elsevier.com/content/abstract/scopus_id/00000000002"}],
+        "prism:url": "https://api.elsevier.com/content/abstract/scopus_id/00000000002",
+        "dc:identifier": "SCOPUS_ID:00000000002",
+        "eid": "2-s2.0-00000000002",
+        "dc:title": "An original article on placeholder results",
+        "dc:creator": "Sample B.",
+        "prism:publicationName": "Example Letters",
+        "prism:coverDate": "2022-11-15",
+        "prism:doi": "10.5555/example.002",
+        "citedby-count": "420",
+        "affiliation": [{"@_fa": "true", "affilname": "Institute of Examples", "affiliation-city": "Sampleville", "affiliation-country": "Germany"}],
+        "subtype": "ar",
+        "subtypeDescription": "Article",
+        "openaccess": "0",
+        "openaccessFlag": false
+      },
+      {
+        "@_fa": "true",
+        "link": [{"@_fa": "true", "@ref": "self", "@href": "https://api.elsevier.com/content/abstract/scopus_id/00000000003"}],
+        "prism:url": "https://api.elsevier.com/content/abstract/scopus_id/00000000003",
+        "dc:identifier": "SCOPUS_ID:00000000003",
+        "eid": "2-s2.0-00000000003",
+        "dc:title": "A conference paper without a DOI",
+        "dc:creator": "Placeholder C.",
+        "prism:publicationName": "Proceedings of the Example Conference",
+        "prism:coverDate": "2021-07-01",
+        "citedby-count": "37",
+        "subtype": "cp",
+        "subtypeDescription": "Conference Paper",
+        "openaccess": "0",
+        "openaccessFlag": false
+      }
+    ]
+  }
+}
