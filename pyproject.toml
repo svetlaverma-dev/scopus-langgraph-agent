@@ -4,14 +4,16 @@ version = "0.1.0"
 description = "A LangGraph agent that queries Scopus through an MCP server"
 requires-python = ">=3.11"
 dependencies = [
-  "httpx",                    # HTTP client for calling the Scopus API
-  "python-dotenv",            # loads keys from .env
-  "mcp[cli]",                 # MCP SDK + 'mcp dev' inspector
-  "langgraph",                # the agent graph framework
-  "langchain-anthropic",      # Claude models for LangChain/LangGraph
-  "langchain-mcp-adapters",   # turns MCP tools into LangChain tools
-  "streamlit",                # web chat UI
+  "httpx",                           # HTTP client for calling the Scopus API
+  "python-dotenv",                   # loads keys from .env
+  "mcp[cli]==1.30.0",                # MCP SDK + 'mcp dev' inspector
+  "langgraph==1.2.16",               # the agent graph framework
+  "langchain-core==1.6.12",          # LangChain base types (messages, tools)
+  "langchain-anthropic==1.7.6",      # Claude models for LangChain/LangGraph
+  "langchain-mcp-adapters==0.3.2",   # turns MCP tools into LangChain tools
+  "streamlit==1.66.1",               # web chat UI
 ]
+
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-asyncio"]
