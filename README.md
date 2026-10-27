@@ -1,5 +1,7 @@
 # scopus-langgraph-agent
 
+**▶ Live demo: [scopus-agent-demo.streamlit.app](https://scopus-agent-demo.streamlit.app)** (access code available on request via [LinkedIn](https://www.linkedin.com/in/svetla-verma-77b6a03/)). The hosted app runs in [demo mode](#how-does-demo-mode-work): Claude writes each Scopus query live, but the search results are synthetic.
+
 A conversational AI agent for intelligent search over research literature. Ask a question in plain English, such as *"What are the most cited UK cancer papers since 2020?"*, and the agent turns it into a Scopus Advanced Search query, runs it through an MCP server and answers with cited results from live data.
 
 ## Contents
@@ -182,7 +184,7 @@ Measure how well the agent turns natural-language questions into correct Scopus 
 ### 4. More tools and a web UI
 
 - **New MCP tools:** `get_abstract` and `search_authors`, wrapping the Scopus client's existing abstract and author endpoints. They let the agent summarise papers, identify leading researchers, and retrieve complete affiliation data, which search results only partly include.
-- **Web chat interface:** done, as a Streamlit app (see [Quick start](#quick-start)). Still to come: a hosted demo and a short demo recording in this README, so the agent can be tried and seen without installing anything.
+- **Web chat interface:** done, as a Streamlit app (see [Quick start](#quick-start)), with a [hosted demo](https://scopus-agent-demo.streamlit.app) on Streamlit Community Cloud (access code available on request). Still to come: a short demo recording in this README, so the agent can be seen without an access code.
 
 ### 5. Vendor routing through an LLM gateway
 
