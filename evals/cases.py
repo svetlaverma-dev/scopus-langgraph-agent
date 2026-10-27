@@ -19,6 +19,8 @@ CASES = [
         "id": "graphene_batteries_recent",
         "question": "Find recent papers on graphene batteries",
         "query_must_match": [r"graphene", r"batter"],
+        "query_must_not_match": [
+        ],
         "sort": "-coverDate",
     },
     {
@@ -71,6 +73,8 @@ CASES = [
     {
         "id": "beyond_capability_pdf",
         "question": "Download the full PDF of the most cited graphene paper for me",
-        "expect_tool_call": False,
+        "query_must_match": [r"graphene"],
+        "sort": "-citedby-count",
+
     },
 ]
