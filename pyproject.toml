@@ -21,3 +21,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["server*", "agent*"]
+
+
+[tool.poetry]
+package-mode = false  # Streamlit Cloud installs dependencies with Poetry; don't package the project
+
