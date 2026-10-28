@@ -6,6 +6,7 @@ A conversational AI agent for intelligent search over research literature. Ask a
 
 ## Contents
 
+- [Data use and licensing](#data-use-and-licensing)
 - [What it is](#what-it-is)
 - [Why it was built](#why-it-was-built)
 - [Quick start](#quick-start)
@@ -20,6 +21,14 @@ A conversational AI agent for intelligent search over research literature. Ask a
   - [4. More tools and a web UI](#4-more-tools-and-a-web-ui)
   - [5. Vendor routing through an LLM gateway](#5-vendor-routing-through-an-llm-gateway)
 
+## Data use and licensing
+
+Scopus data belongs to Elsevier and is used under [Elsevier's API terms](https://dev.elsevier.com/policy.html). This project handles it as follows:
+
+- **The hosted demo returns synthetic results only.** It runs in [demo mode](#how-does-demo-mode-work), so no Scopus data is shown, stored or shared through it. Claude still writes a real Scopus query for each question, and the app shows it.
+- **Real results are only available locally,** when you run the agent with your own Scopus API key. They're shown to you in your terminal or browser, and passed to the configured LLM (Claude) so it can write its answer.
+- **No Scopus data is committed to this repository.** The tests use synthetic fixtures, and any real API responses saved during development stay on the developer's machine and are excluded by `.gitignore`.
+
 ## What it is
 
 The agent combines several capabilities:
@@ -31,6 +40,8 @@ The agent combines several capabilities:
 ## Why it was built
 
 [Scopus](https://www.elsevier.com/products/scopus) is Elsevier's abstract and citation database, curated by independent subject matter experts, with more than 100 million records according to Elsevier. Getting precise answers from it means knowing its [Advanced Search syntax](https://dev.elsevier.com/sc_search_tips.html), such as `TITLE-ABS-KEY(...)`, `AFFILCOUNTRY(...)` and `PUBYEAR > ...`. This project explores how an AI agent can remove that barrier, so anyone can query complex data sources in plain language.
+
+Elsevier offers [Scopus AI](https://www.elsevier.com/products/scopus/scopus-ai) as a commercial product for conversational search over Scopus. This project is an independent, open exploration of how such an agent is engineered, not an alternative to it.
 
 It is also a hands-on exploration of how production-style agentic AI systems are put together:
 
