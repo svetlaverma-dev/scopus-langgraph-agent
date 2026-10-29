@@ -18,7 +18,7 @@ A conversational AI agent for intelligent search over research literature. Ask a
   - [Alternatives considered](#alternatives-considered)
 - [Roadmap](#roadmap)
   - [1. Evals suite (in progress)](#1-evals-suite-in-progress)
-  - [2. CI and observability (in progress)(#2-ci-and-observability-in-progress)]
+  - [2. CI and observability (in progress)](#2-ci-and-observability-in-progress)
   - [3. Guardrails and trust](#3-guardrails-and-trust)
   - [4. More tools and a web UI](#4-more-tools-and-a-web-ui)
   - [5. Vendor routing through an LLM gateway](#5-vendor-routing-through-an-llm-gateway)
