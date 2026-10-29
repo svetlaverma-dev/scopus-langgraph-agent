@@ -1,5 +1,7 @@
 # scopus-langgraph-agent
 
+[![tests](https://github.com/svetlaverma-dev/scopus-langgraph-agent/actions/workflows/tests.yml/badge.svg)](https://github.com/svetlaverma-dev/scopus-langgraph-agent/actions/workflows/tests.yml)
+
 **▶ Live demo: [scopus-agent-demo.streamlit.app](https://scopus-agent-demo.streamlit.app)** (access code available on request via [LinkedIn](https://www.linkedin.com/in/svetla-verma-77b6a03/)). The hosted app runs in [demo mode](#how-does-demo-mode-work): Claude writes each Scopus query live, but the search results are synthetic.
 
 A conversational AI agent for intelligent search over research literature. Ask a question in plain English, such as *"What are the most cited UK cancer papers since 2020?"*, and the agent turns it into a Scopus Advanced Search query, runs it through an MCP server and answers with cited results from live data.
