@@ -1,0 +1,22 @@
+name: tests
+
+on:
+  push:                     # 2 spaces
+    branches: [main]        # 4 spaces
+  pull_request:             # 2 spaces
+
+jobs:
+  test:                     # 2 spaces
+    runs-on: ubuntu-latest  # 4 spaces
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e ".[dev]"
+      - run: pytest -v
