@@ -18,7 +18,7 @@ A conversational AI agent for intelligent search over research literature. Ask a
   - [Alternatives considered](#alternatives-considered)
 - [Roadmap](#roadmap)
   - [1. Evals suite (in progress)](#1-evals-suite-in-progress)
-  - [2. CI and observability](#2-ci-and-observability)
+  - [2. CI and observability (in progress)(#2-ci-and-observability-in-progress)]
   - [3. Guardrails and trust](#3-guardrails-and-trust)
   - [4. More tools and a web UI](#4-more-tools-and-a-web-ui)
   - [5. Vendor routing through an LLM gateway](#5-vendor-routing-through-an-llm-gateway)
@@ -184,9 +184,9 @@ Measure how well the agent turns natural-language questions into correct Scopus 
 - Checks the agent's first tool call without calling Scopus, so a run uses no Scopus quota and one LLM call per question.
 - Later: end-to-end evals that grade the final answers (for example, are all papers cited and relevant?), possibly using an LLM as a judge.
 
-### 2. CI and observability
+### 2. CI and observability (in progress)
 
-- **Continuous integration:** a GitHub Actions workflow runs the test suite on every push, with a status badge in this README.
+- **Continuous integration:** done. A GitHub Actions workflow runs the test suite on Python 3.11 and 3.12 for every push to `main` and every pull request, with a status badge at the top of this README. Branch protection requires the tests to pass before a pull request can be merged.
 - **Tracing with LangSmith:** record every agent run (each step, tool call and query, plus latency and token cost) for debugging, and to provide the cost and latency data that later phases depend on.
 
 ### 3. Guardrails and trust
