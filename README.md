@@ -9,6 +9,7 @@ A conversational AI agent for intelligent search over research literature. Ask a
 ## Contents
 
 - [Data use and licensing](#data-use-and-licensing)
+- [Guardrails](#guardrails)
 - [What it is](#what-it-is)
 - [Why it was built](#why-it-was-built)
 - [Quick start](#quick-start)
@@ -19,11 +20,36 @@ A conversational AI agent for intelligent search over research literature. Ask a
 - [Roadmap](#roadmap)
   - [1. Evals suite (in progress)](#1-evals-suite-in-progress)
   - [2. CI and observability (in progress)](#2-ci-and-observability-in-progress)
-  - [3. Guardrails and trust](#3-guardrails-and-trust)
+  - [3. Prompt-injection defence and groundedness](#3-prompt-injection-defence-and-groundedness)
   - [4. More tools and a web UI](#4-more-tools-and-a-web-ui)
   - [5. Vendor routing through an LLM gateway](#5-vendor-routing-through-an-llm-gateway)
 
 ## Data use and licensing
+
+## Guardrails
+
+The project's rules are enforced in layers, so that a single mistake can't leak data or break the agent. They're written down for people and coding agents in `CLAUDE.md`, and the important ones are also enforced in code or CI.
+
+| Layer | Guardrail | Where | Protects against |
+|---|---|---|---|
+| **Safe defaults** | API keys and real Scopus responses are gitignored | `.gitignore` | Committing secrets or Elsevier data |
+| | LangSmith tracing is off unless switched on explicitly | `.env.example` | Sending data to LangSmith by accident |
+| | The hosted demo runs in demo mode | Streamlit Cloud settings | Showing real Scopus data publicly |
+| **Runtime** | Tracing is forced off outside demo mode | `agent/graph.py` | Real Scopus data reaching LangSmith, even if tracing is switched on |
+| | Access code and a question limit on the hosted demo | `streamlit_app.py` | Misuse and runaway LLM costs |
+| **CI** | No `print` to stdout in `server/` | `scripts/check_guardrails.py` | Corrupting the MCP server's JSON-RPC messages, which travel over stdout |
+| | `.env` and real Scopus fixtures are never tracked by Git | `scripts/check_guardrails.py` | Secrets or Elsevier data committed, even if `.gitignore` is bypassed |
+| | Unit tests on Python 3.11 and 3.12 | `.github/workflows/tests.yml` | Regressions |
+| | Tests and guardrail checks are required to merge a pull request | GitHub ruleset | Merging a change that fails any check above |
+| **Model behaviour** | The system prompt limits searches to literature questions and answers to the tool results, with each paper cited | `agent/graph.py` | Unneeded searches and invented papers |
+| | Evals check the queries the model writes | `evals/` | Query quality dropping after a prompt or model change |
+| **Guidance** | Project rules for contributors and coding agents | `CLAUDE.md` | Rules broken because nobody knew about them |
+
+Known gaps:
+
+- The secrets check looks at file names only, so a key pasted into source code wouldn't be caught. GitHub secret scanning or a tool such as gitleaks would cover this.
+- Evals run on demand rather than on every change, since each run calls a paid LLM.
+- Prompt-injection defence and a groundedness check are planned (see [Roadmap](#3-prompt-injection-defence-and-groundedness)).
 
 Scopus data belongs to Elsevier and is used under [Elsevier's API terms](https://dev.elsevier.com/policy.html). This project handles it as follows:
 
@@ -147,6 +173,7 @@ The synthetic papers use the query's topic, its `PUBYEAR >` year and the request
 
 Demo mode also keeps the demo working when the Scopus API is unavailable, for example during an outage, or when the API key has expired or its quota has run out. An Anthropic API key is still needed, since Claude does the reasoning.
 
+
 ## Why LangGraph
 
 The agent layer is built with [LangGraph](https://github.com/langchain-ai/langgraph) for these reasons:
@@ -186,10 +213,10 @@ Measure how well the agent turns natural-language questions into correct Scopus 
 
 ### 2. CI and observability (in progress)
 
-- **Continuous integration:** done. A GitHub Actions workflow runs the test suite on Python 3.11 and 3.12 for every push to `main` and every pull request, with a status badge at the top of this README. Branch protection requires the tests to pass before a pull request can be merged.
+- **Continuous integration:** done. A GitHub Actions workflow runs the test suite on Python 3.11 and 3.12 for every push to `main` and every pull request, with a status badge at the top of this README. Branch protection requires the tests and the guardrail checks to pass before a pull request can be merged.
 - **Tracing with LangSmith:** record every agent run (each step, tool call and query, plus latency and token cost) for debugging, and to provide the cost and latency data that later phases depend on.
 
-### 3. Guardrails and trust
+### 3. Prompt-injection defence and groundedness
 
 - **Prompt-injection defence:** treat tool results (paper titles, abstracts) as untrusted data, so text inside them can't redirect the agent. Covered by dedicated eval cases.
 - **Groundedness check:** verify that every paper cited in an answer actually appeared in the search results, so citations are never invented.
