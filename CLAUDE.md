@@ -27,7 +27,7 @@ A conversational research assistant: a LangGraph agent (Claude) turns natural-la
 
 - Scopus data belongs to Elsevier. Never commit real Scopus API responses; real fixtures stay local and gitignored. Tests use synthetic data.
 - The hosted Streamlit app, demo videos and screenshots use demo mode (`DEMO_MODE=1`, synthetic results) until Elsevier approves real data.
-- LangSmith tracing only in demo mode. `LANGSMITH_TRACING` is deliberately not in `.env`, so real Scopus data never reaches LangSmith.
+- LangSmith tracing only in demo mode, so real Scopus data never reaches LangSmith. Enforced in `agent/graph.py`, which turns tracing off unless `DEMO_MODE=1`. `LANGSMITH_TRACING` is also deliberately not in `.env`.
 - The MCP server talks JSON-RPC over stdout. Never `print` to stdout in `server/`; log to stderr. Enforced by `scripts/check_guardrails.py`.
 - Never commit `.env` or put keys in code. New variables go in `.env.example` as empty placeholders.
 - Evals call a real LLM, so they run on demand or on a schedule, not on every push.

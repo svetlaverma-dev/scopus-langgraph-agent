@@ -12,6 +12,16 @@ from langgraph.prebuilt import ToolNode, tools_condition
 
 load_dotenv()
 
+
+def disable_tracing_outside_demo_mode():
+    """Keep real Scopus data out of LangSmith: tracing only runs in demo mode."""
+    if os.environ.get("DEMO_MODE") != "1":
+        os.environ["LANGSMITH_TRACING"] = "false"
+        os.environ["LANGCHAIN_TRACING_V2"] = "false"  # older name for the same switch
+
+
+disable_tracing_outside_demo_mode()
+
 SYSTEM_PROMPT = """You are a research assistant with access to the Scopus database.
 Answer questions by turning them into Scopus Advanced Search queries for the search_scopus tool.
 Only search when the user wants to find, list or compare published literature. For greetings,
