@@ -8,7 +8,7 @@ dependencies = [
   "python-dotenv",                   # loads keys from .env
   "mcp[cli]==1.30.0",                # MCP SDK + 'mcp dev' inspector
   "langgraph==1.2.16",               # the agent graph framework
-  "langchain-core==1.6.12",          # LangChain base types (messages, tools)
+  "langchain-core==1.7.7",          # LangChain base types (messages, tools)
   "langchain-anthropic==1.7.6",      # Claude models for LangChain/LangGraph
   "langchain-mcp-adapters==0.3.2",   # turns MCP tools into LangChain tools
   "streamlit==1.66.1",               # web chat UI
